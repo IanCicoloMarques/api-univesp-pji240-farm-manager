@@ -33,5 +33,15 @@ namespace api_univesp_pji240_farm_manager.Controllers
             return productList;
         }
 
+        [HttpPost]
+        [Route("AddProduct")]
+        public ActionResult AddProduct(ProductDTO request)
+        {
+            productList.Add(request);
+
+            return Ok();
+
+        }
+
     }
 }
