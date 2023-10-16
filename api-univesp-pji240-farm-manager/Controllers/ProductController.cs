@@ -1,5 +1,7 @@
 ﻿using api_univesp_pji240_farm_manager.DTO;
 using Microsoft.AspNetCore.Mvc;
+using MySqlConnector;
+
 
 namespace api_univesp_pji240_farm_manager.Controllers
 {
@@ -21,16 +23,37 @@ namespace api_univesp_pji240_farm_manager.Controllers
             new ProductDTO { id = 9, Name = "Quiabo", Price = 4.59M, Image = "https://giassi.vtexassets.com/arquivos/ids/512350-800-auto?v=637995086005470000&width=800&height=auto&aspect=true" }
         };
 
+        private readonly MySqlConnection _connection;
 
-        public ProductController()
+        public ProductController(MySqlConnection connection)
         {
+            _connection = connection;
         }
 
 
         [HttpGet]
-        public List<ProductDTO> GetCustomerList()
+        public async Task<List<ProductDTO>> GetCustomerList()
         {
-            return productList;
+
+            await _connection.OpenAsync();
+
+
+            List<ProductDTO> response = new List<ProductDTO>();
+
+            using var command = new MySqlCommand("SELECT * FROM products;", _connection);
+            using var reader = await command.ExecuteReaderAsync();
+            
+            while (await reader.ReadAsync())
+            {
+                ProductDTO product = new ProductDTO();
+                product.id = reader.GetInt32(0);
+                product.Name = reader.GetString(1);
+                product.Price = reader.GetDecimal(2);
+                product.Image = reader.GetString(3);
+                response.Add(product);
+            }
+
+            return response;
         }
 
         [HttpPost]

@@ -1,3 +1,5 @@
+using MySqlConnector;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
+
+builder.Services.AddTransient<MySqlConnection>(_ =>
+    new MySqlConnection(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();
 
@@ -22,7 +27,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://www.kolima.net"));
 
 app.MapControllers();
 
