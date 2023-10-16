@@ -1,3 +1,5 @@
+using api_univesp_pji240_farm_manager.Data;
+using api_univesp_pji240_farm_manager.Interface.Data;
 using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,11 @@ builder.Services.AddCors();
 
 builder.Services.AddTransient<MySqlConnection>(_ =>
     new MySqlConnection(builder.Configuration.GetConnectionString("Database")));
+
+builder.Services.AddSingleton<IDataProductRepository, DataProductRepository>();
+builder.Services.AddSingleton<IDataCustomerRepository, DataCustomerRepository>();
+builder.Services.AddSingleton<IDataOrderRepository, DataOrderRepository>();
+
 
 var app = builder.Build();
 
