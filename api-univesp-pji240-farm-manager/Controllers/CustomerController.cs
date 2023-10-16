@@ -17,7 +17,8 @@ namespace api_univesp_pji240_farm_manager.Controllers
             new CustomerDTO { Address = "Rua B, 10", id = 5, Name = "Ian", Phone = "1641348752"},
             new CustomerDTO { Address = "Rua C, 45", id = 6, Name = "Paulo", Phone = "1879461384"},
             new CustomerDTO { Address = "Rua I, 0", id = 7, Name = "Richard", Phone = "19968743168"},
-            new CustomerDTO { Address = "Rua J, 8450", id = 8, Name = "Vittor", Phone = "15946810254"}
+            new CustomerDTO { Address = "Rua J, 8450", id = 8, Name = "Vittor", Phone = "15946810254"},
+            new CustomerDTO { Address = "Rua L, 223", id = 1, Name = "Test", Phone = "117973624880"}
         };
 
 
