@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
+Console.WriteLine("DB-CS", builder.Configuration.GetConnectionString("Database"));
+
 builder.Services.AddTransient<MySqlConnection>(_ =>
     new MySqlConnection(builder.Configuration.GetConnectionString("Database")));
 
