@@ -1,5 +1,6 @@
 using api_univesp_pji240_farm_manager.Data;
 using api_univesp_pji240_farm_manager.Interface.Data;
+using Microsoft.AspNetCore.HttpOverrides;
 using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,11 @@ app.UseAuthorization();
 
 //app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://www.kolima.net"));
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 app.MapControllers();
 
