@@ -34,7 +34,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://www.kolima.net"));
+//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://www.kolima.net"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapControllers();
 

@@ -13,7 +13,7 @@ namespace api_univesp_pji240_farm_manager.Data
             MySqlCommand command = connection.CreateCommand();
 
             command.CommandText = @"SELECT* 
-                                    FROM customer P
+                                    FROM customers P
                                     WHERE P.removed = 0";
 
             using MySqlDataReader reader = await command.ExecuteReaderAsync();
@@ -66,7 +66,7 @@ namespace api_univesp_pji240_farm_manager.Data
                                     SET
                                         removed = 1
                                       , removed_at = CURRENT_TIMESTAMP
-                                    WHERE product_id = @id";
+                                    WHERE customer_id = @id";
 
             command.Parameters.AddWithValue("@id", id);
 

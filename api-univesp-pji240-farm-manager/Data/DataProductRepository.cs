@@ -38,7 +38,7 @@ namespace api_univesp_pji240_farm_manager.Data
             while (await reader.ReadAsync())
             {
                 ProductDTO product = new ProductDTO();
-                product.id = reader.GetInt32(0);
+                product.ProductId = reader.GetInt32(0);
                 product.Name = reader.GetString(1);
                 product.Price = reader.GetDecimal(2);
                 product.Image = reader.GetString(3);
@@ -58,7 +58,7 @@ namespace api_univesp_pji240_farm_manager.Data
                                       , removed_at = CURRENT_TIMESTAMP
                                     WHERE product_id = @id";
 
-            command.Parameters.AddWithValue("@id", productDTO.id);
+            command.Parameters.AddWithValue("@id", productDTO.ProductId);
 
             await command.ExecuteNonQueryAsync();
         }
@@ -75,7 +75,7 @@ namespace api_univesp_pji240_farm_manager.Data
                                       , updated_at = CURRENT_TIMESTAMP
                                     WHERE product_id = @id";
 
-            command.Parameters.AddWithValue("@id", productDTO.id);
+            command.Parameters.AddWithValue("@id", productDTO.ProductId);
 
             command.Parameters.AddWithValue("@product_name", productDTO.Name);
             command.Parameters.AddWithValue("@price", productDTO.Price);

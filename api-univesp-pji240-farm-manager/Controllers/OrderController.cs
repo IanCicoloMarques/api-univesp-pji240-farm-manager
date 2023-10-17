@@ -22,7 +22,7 @@ namespace api_univesp_pji240_farm_manager.Controllers
 
 
         [HttpGet]
-        public async Task<List<OrderDTO>> GetCustomerList()
+        public async Task<List<OrderDTO>> GetAllOrders()
         {
 
             List<OrderDTO> response = new List<OrderDTO>();
@@ -41,7 +41,12 @@ namespace api_univesp_pji240_farm_manager.Controllers
         {
             await _connection.OpenAsync();
 
-            await _data.AddOrder(request, _connection);
+            long orderId = await _data.AddOrder(request, _connection);
+            if (orderId > 0)
+            {
+                request.OrderId = orderId;
+                await _data.AddOrderItems(request, _connection);
+            }
 
             _connection.Close();
 
