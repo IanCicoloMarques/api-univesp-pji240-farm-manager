@@ -1,5 +1,6 @@
 ﻿using api_univesp_pji240_farm_manager.DTO;
 using api_univesp_pji240_farm_manager.Interface.Data;
+using Dapper;
 using MySqlConnector;
 
 namespace api_univesp_pji240_farm_manager.Data
@@ -27,24 +28,29 @@ namespace api_univesp_pji240_farm_manager.Data
         {
             List<ProductDTO> response = new List<ProductDTO>();
 
-            MySqlCommand command = connection.CreateCommand();
-
-            command.CommandText = @"SELECT* 
+            string query = @"SELECT P.product_Id AS ProductId,
+                                           P.product_name AS Name,
+                                           P.price AS Price,
+                                           P.product_image AS Image,
+                                           C.name AS Category
                                     FROM products P
+                                    LEFT JOIN categories C ON C.category_id = P.category_id
                                     WHERE P.removed = 0";
 
-            using MySqlDataReader reader = await command.ExecuteReaderAsync();
+            response = connection.Query<ProductDTO>(query).ToList();
+            
+            
 
-            while (await reader.ReadAsync())
-            {
-                ProductDTO product = new ProductDTO();
-                product.ProductId = reader.GetInt32(0);
-                product.Name = reader.GetString(1);
-                product.Price = reader.GetDecimal(2);
-                product.Image = reader.GetString(3);
-                response.Add(product);
-            }
+            return response;
+        }
 
+        public List<CategoryDTO> GetCategories(MySqlConnection connection)
+        {
+            List<CategoryDTO> response = new List<CategoryDTO>();
+            string query = @"SELECT *, category_id AS ID
+                                    FROM categories P";
+
+            response = connection.Query<CategoryDTO>(query).ToList();
             return response;
         }
 

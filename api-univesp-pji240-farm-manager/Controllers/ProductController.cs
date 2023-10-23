@@ -50,5 +50,20 @@ namespace api_univesp_pji240_farm_manager.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetCategories")]
+        public async Task<List<CategoryDTO>> GetCategories()
+        {
+
+            List<CategoryDTO> response = new List<CategoryDTO>();
+            await _connection.OpenAsync();
+
+            response = _data.GetCategories(_connection);
+
+            _connection.Close();
+
+            return response;
+        }
+
     }
 }
