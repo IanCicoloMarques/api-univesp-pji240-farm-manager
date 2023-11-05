@@ -5,6 +5,7 @@
         public long OrderId { get; set; }
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
+        public string FullAddress { get; set; }
         public List<ProductDTO> ProductList { get; set; }
         public bool isPaid { get; set; }
 
