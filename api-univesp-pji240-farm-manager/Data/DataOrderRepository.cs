@@ -52,17 +52,24 @@ namespace api_univesp_pji240_farm_manager.Data
 
             string query = @"SELECT
                                 O.customer_id AS CustomerId,
-                                CONCAT(C.first_name, "" "", C.last_name) AS CustomerName,
+                                CONCAT(C.first_name, ' ', C.last_name) AS CustomerName,
+                                CONCAT(C.address_1, ', ', C.address_3, ' - CEP: ', C.address_2) AS FullAddress,
+                                DATE_FORMAT(O.estimated_delivery , '%d/%m/%Y') as EstimatedDelivery,
+                                DATE_FORMAT(O.created_at , '%d/%m/%Y') as OrderedAt,
+                                OC.status_description as StatusDescription,
                                 O.is_paid AS isPaid,
                                 O.order_id AS OrderId,
                                 OI.order_Id AS Id,
                                 OI.product_Id as ProductId,
                                 OI.amount AS Amount,
                                 OI.product_name AS Name,
-                                OI.price As Price
+                                OI.price As Price,
+                                P.product_image as Image
                             FROM orders O
                             INNER JOIN orderitems OI ON O.order_id = OI.order_id
-                            INNER JOIN customers C on C.customer_id = O.customer_id";
+                            INNER JOIN customers C on C.customer_id = O.customer_id
+                            INNER JOIN orderstatus OC on OC.order_status_id = O.order_status_id
+                            INNER JOIN products P ON P.product_Id = OI.product_id";
 
 
 
