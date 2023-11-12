@@ -15,6 +15,7 @@ RUN dotnet publish -c Release -o out
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 FROM base AS final
+ls -a
 WORKDIR /app
 ls
 COPY --from=build /app/out ./
