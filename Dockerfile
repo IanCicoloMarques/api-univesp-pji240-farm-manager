@@ -1,28 +1,11 @@
-# Build stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 WORKDIR /app
-RUN dir /s
-# Copy and restore project files
-COPY api-univesp-pji240-farm-manager/api-univesp-pji240-farm-manager.csproj .
-RUN dir /s
-RUN dotnet restore
-
-# Copy the entire project and build
 COPY . .
-RUN dir /s
-RUN dotnet publish -c Release -o out
+RUN dotnet restore
+RUN dotnet publish -o /app/published-app
 
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-FROM base AS final
-RUN dir /s
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as runtime
 WORKDIR /app
-RUN dir /s
-COPY --from=build /app/out ./
-
-# Expose port 80
-EXPOSE 5000
-
-# Set the entry point for the container
-RUN dir /s
-ENTRYPOINT ["dotnet", "app/api-univesp-pji240-farm-manager.dll"]
+COPY --from=build /app/published-app /app
+EXPOSE 5001
+ENTRYPOINT [ "dotnet", "/app/api-univesp-pji240-farm-manager.dll" ]
