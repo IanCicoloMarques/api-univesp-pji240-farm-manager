@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copy and restore project files
-COPY api-univesp-pji240-farm-manager/api-univesp-pji240-farm-manager .
+COPY api-univesp-pji240-farm-manager/api-univesp-pji240-farm-manager.csproj .
 RUN dotnet restore
 
 # Copy the entire project and build
@@ -20,4 +20,4 @@ COPY --from=build /app/out ./
 EXPOSE 5000
 
 # Set the entry point for the container
-ENTRYPOINT ["dotnet", "api-univesp-pji240-farm-manager"]
+ENTRYPOINT ["dotnet", "api-univesp-pji240-farm-manager.dll"]
