@@ -1,5 +1,5 @@
 # Build stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copy and restore project files
@@ -11,7 +11,8 @@ COPY . .
 RUN dotnet publish -c Release -o out
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM base AS final
 WORKDIR /app
 COPY --from=build /app/out ./
 
