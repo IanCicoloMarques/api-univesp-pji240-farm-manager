@@ -20,4 +20,4 @@ COPY --from=build /app/out ./
 EXPOSE 5000
 
 # Set the entry point for the container
-ENTRYPOINT ["dotnet", "api-univesp-pji240-farm-manager.dll"]
+ENTRYPOINT ["dotnet", "app/api-univesp-pji240-farm-manager.dll"]
