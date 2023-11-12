@@ -12,6 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHealthChecks();
+
+
 builder.Services.AddCors();
 
 string dbcs = builder.Configuration.GetConnectionString("Database");
@@ -45,6 +48,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+
+app.MapHealthChecks("/health");
 
 app.MapControllers();
 
