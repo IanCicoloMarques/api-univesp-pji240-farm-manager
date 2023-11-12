@@ -7,6 +7,5 @@ RUN dotnet publish -o /app/published-app
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as runtime
 WORKDIR /app
 COPY --from=build /app/published-app /app
-EXPOSE 5001
-EXPOSE 5000
+EXPOSE 8080
 ENTRYPOINT [ "dotnet", "/app/api-univesp-pji240-farm-manager.dll" ]
