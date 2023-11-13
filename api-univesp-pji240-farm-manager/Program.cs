@@ -53,6 +53,4 @@ app.MapHealthChecks("/health");
 
 app.MapControllers();
 
-//app.Run("http://*:5001");
-
-app.Run();
+app.Run("http://*:5001");
