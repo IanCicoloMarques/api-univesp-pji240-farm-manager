@@ -22,13 +22,13 @@ namespace api_univesp_pji240_farm_manager.Controllers
 
 
         [HttpGet]
-        public async Task<List<OrderDTO>> GetAllOrders()
+        public async Task<List<OrderDTO>> GetPendingOrders()
         {
 
             List<OrderDTO> response = new List<OrderDTO>();
             await _connection.OpenAsync();
 
-            response = await _data.GetAllOrders(_connection);
+            response = await _data.GetPendingOrders(_connection);
 
             _connection.Close();
 
@@ -54,5 +54,46 @@ namespace api_univesp_pji240_farm_manager.Controllers
 
         }
 
+        [HttpPut]
+        [Route("UpdateOrder")]
+        public async Task<ActionResult> UpdateOrder(int orderId, int statusId)
+        {
+            await _connection.OpenAsync();
+
+            await _data.UpateOrder(orderId, statusId, _connection);
+
+            _connection.Close();
+
+            return Ok();
+
+        }
+
+        [HttpPut]
+        [Route("ChangePayment")]
+        public async Task<ActionResult> UpdatePayment(int orderId, bool paymentStatus)
+        {
+            await _connection.OpenAsync();
+
+            await _data.ChangePayment(orderId, paymentStatus, _connection);
+
+            _connection.Close();
+
+            return Ok();
+
+        }
+
+        [HttpPut]
+        [Route("ConfirmDelivery")]
+        public async Task<ActionResult> ConfirmDelivery(int orderId)
+        {
+            await _connection.OpenAsync();
+
+            await _data.ConfirmDelivery(orderId, _connection);
+
+            _connection.Close();
+
+            return Ok();
+
+        }
     }
 }

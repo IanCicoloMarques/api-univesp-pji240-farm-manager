@@ -46,7 +46,7 @@ namespace api_univesp_pji240_farm_manager.Data
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<List<OrderDTO>> GetAllOrders(MySqlConnection connection)
+        public async Task<List<OrderDTO>> GetPendingOrders(MySqlConnection connection)
         {
             List<OrderDTO> response = new List<OrderDTO>();
 
@@ -69,7 +69,8 @@ namespace api_univesp_pji240_farm_manager.Data
                             INNER JOIN orderitems OI ON O.order_id = OI.order_id
                             INNER JOIN customers C on C.customer_id = O.customer_id
                             INNER JOIN orderstatus OC on OC.order_status_id = O.order_status_id
-                            INNER JOIN products P ON P.product_Id = OI.product_id";
+                            INNER JOIN products P ON P.product_Id = OI.product_id
+                            WHERE o.order_status_id IN (1, 3, 4, 5, 6)";
 
 
 
@@ -94,9 +95,56 @@ namespace api_univesp_pji240_farm_manager.Data
             throw new NotImplementedException();
         }
 
-        public Task UpateOrder(OrderDTO order, MySqlConnection connection)
+        public async Task UpateOrder(int orderId, int statusId, MySqlConnection connection)
         {
-            throw new NotImplementedException();
+            MySqlCommand command = connection.CreateCommand();
+
+            command.CommandText = @"UPDATE Orders
+                                    SET 
+                                        order_status_id = @statusId
+                                    WHERE
+                                        order_id = @id";
+
+            command.Parameters.AddWithValue("@id", orderId);
+            command.Parameters.AddWithValue("@statusId", statusId);
+
+            await command.ExecuteNonQueryAsync();
         }
+
+        public async Task ChangePayment(int orderId, bool isPaid, MySqlConnection connection)
+        {
+            MySqlCommand command = connection.CreateCommand();
+
+            command.CommandText = @"UPDATE Orders
+                                    SET 
+                                        is_paid = @is_paid
+                                    WHERE
+                                        order_id = @id";
+
+            command.Parameters.AddWithValue("@id", orderId);
+            command.Parameters.AddWithValue("@is_paid", isPaid);
+
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task ConfirmDelivery(int orderId, MySqlConnection connection)
+        {
+            MySqlCommand command = connection.CreateCommand();
+
+            command.CommandText = @"UPDATE Orders
+                                    SET 
+                                        order_status_id = @statusId
+                                    ,   delivered_on = CURDATE()
+                                    WHERE
+                                        order_id = @id";
+
+            command.Parameters.AddWithValue("@id", orderId);
+            command.Parameters.AddWithValue("@statusId", 7);
+
+            await command.ExecuteNonQueryAsync();
+        }
+
+
+
     }
 }
